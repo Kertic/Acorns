@@ -1,32 +1,43 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Runtime.Serialization;
 using UnityEditor;
 using UnityEngine;
 
 public class CameraTracker : MonoBehaviour
 {
     public GameObject objectToTrack;
-
-
-    public float offsetDistance;
     public int mouseTurnSpeed;
 
 
     private Vector3 _previousMousePosition;
     private Vector3 _currentMousePosition;
+    private Vector3 _trackedObjectsLastOffset;
+
+
+    private List<KeyValuePair<KeyValuePair<Vector3, Vector3>, Color>> debugLines;
 
     void Start()
     {
+        debugLines = new List<KeyValuePair<KeyValuePair<Vector3, Vector3>, Color>>();
+        _trackedObjectsLastOffset = objectToTrack.transform.position - transform.position;
     }
 
     void FixedUpdate()
     {
-        transform.LookAt(objectToTrack.transform);
-        if (Input.GetKey(KeyCode.Mouse1))
-            CalculateMouseTurn();
-        var vectortest = new Vector3(1, 2, 3);
-        vectortest *= 2;
-        transform.position = (-transform.position - objectToTrack.transform.position).normalized * offsetDistance;
+        if (true)
+        {
+            debugLines.Clear();
+            transform.position = objectToTrack.transform.position + _trackedObjectsLastOffset;
+            transform.LookAt(objectToTrack.transform);
+            if (Input.GetKey(KeyCode.Mouse1))
+                CalculateMouseTurn();
+
+
+            _trackedObjectsLastOffset = transform.position - objectToTrack.transform.position;
+        }
     }
 
     private void CalculateMouseTurn()
@@ -34,17 +45,26 @@ public class CameraTracker : MonoBehaviour
         Vector3 positionDelta = _currentMousePosition - _previousMousePosition;
         _previousMousePosition = _currentMousePosition;
         _currentMousePosition = Input.mousePosition;
+        if (_currentMousePosition == _previousMousePosition) return;
 
         Vector3 objectPosition = objectToTrack.transform.position;
-        Transform transform1;
-        (transform1 = transform).RotateAround(objectPosition, Vector3.up, positionDelta.x * mouseTurnSpeed);
+        transform.RotateAround(objectPosition, Vector3.up, positionDelta.x * mouseTurnSpeed);
         transform.RotateAround(objectPosition,
-            Vector3.Cross(transform1.forward, objectPosition), positionDelta.y * mouseTurnSpeed);
+            Vector3.Cross(transform.forward, objectPosition), positionDelta.y * mouseTurnSpeed);
+        debugLines.Add(new KeyValuePair<KeyValuePair<Vector3, Vector3>, Color>(
+            new KeyValuePair<Vector3, Vector3>(
+                transform.position,
+                Vector3.Cross(transform.forward, objectPosition)),
+            Color.blue));
     }
 
     void OnDrawGizmosSelected()
     {
-        // Draws a 5 unit long red line in front of the object
-        Gizmos.color = Color.red;
+        if (debugLines != null)
+            for (int i = 0; i < debugLines.Count; i++)
+            {
+                Gizmos.color = debugLines[i].Value;
+                Gizmos.DrawLine(debugLines[i].Key.Key, debugLines[i].Key.Value);
+            }
     }
 }
