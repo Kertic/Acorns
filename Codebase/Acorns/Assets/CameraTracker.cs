@@ -22,7 +22,7 @@ public class CameraTracker : MonoBehaviour
     void Start()
     {
         debugLines = new List<KeyValuePair<KeyValuePair<Vector3, Vector3>, Color>>();
-        _trackedObjectsLastOffset = objectToTrack.transform.position - transform.position;
+        _trackedObjectsLastOffset = transform.position - objectToTrack.transform.position;
     }
 
     void FixedUpdate()
@@ -51,11 +51,6 @@ public class CameraTracker : MonoBehaviour
         transform.RotateAround(objectPosition, Vector3.up, positionDelta.x * mouseTurnSpeed);
         transform.RotateAround(objectPosition,
             Vector3.Cross(transform.forward, objectPosition), positionDelta.y * mouseTurnSpeed);
-        debugLines.Add(new KeyValuePair<KeyValuePair<Vector3, Vector3>, Color>(
-            new KeyValuePair<Vector3, Vector3>(
-                transform.position,
-                Vector3.Cross(transform.forward, objectPosition)),
-            Color.blue));
     }
 
     void OnDrawGizmosSelected()
