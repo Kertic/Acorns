@@ -18,14 +18,14 @@ public class PlayerMover : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.W))
-            k_rigidBody.velocity+= Vector3.forward;
-        if(Input.GetKey(KeyCode.S))
-            k_rigidBody.velocity-= Vector3.forward;
-        
-        if(Input.GetKey(KeyCode.A))
-            k_rigidBody.velocity+= Vector3.left;
-        if(Input.GetKey(KeyCode.D))
-            k_rigidBody.velocity-= Vector3.left;
+        if (Input.GetKey(KeyCode.W))
+            k_rigidBody.velocity += transform.forward;
+        if (Input.GetKey(KeyCode.S))
+            k_rigidBody.velocity -= transform.forward;
+
+        if (Input.GetKey(KeyCode.A))
+            k_rigidBody.velocity -= transform.right;
+        if (Input.GetKey(KeyCode.D))
+            k_rigidBody.velocity += transform.right;
     }
 }

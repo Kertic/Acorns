@@ -308,7 +308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToTrack: {fileID: 1096327381}
-  mouseTurnSpeed: 1
+  mouseTurnSpeed: 0.5
 --- !u!1 &1096327381
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,7 +388,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1096327381}
-  m_Mesh: {fileID: 2540817853737639666, guid: 2206ac3afd9800c4ea41b4034f8e22f8, type: 3}
+  m_Mesh: {fileID: 2540817853737639666, guid: b8b5bd2eaedf9b948a18a37584542266, type: 3}
 --- !u!222 &1096327385
 CanvasRenderer:
   m_ObjectHideFlags: 0
